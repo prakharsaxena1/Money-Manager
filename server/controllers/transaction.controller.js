@@ -104,7 +104,10 @@ const updateTransaction = async (req, res) => {
     try {
         const transaction = await Transaction.findOne({ _id: id });
         transaction.settledBy.push(req.user.id);
-        console.log(transaction);
+        const value = transaction.settledBy.every((val, index) => val._id === transaction.divideAmong[index]._id);
+        if (value === true) {
+            transaction.isSettled = true;
+        }
         await transaction.save()
         return res.json({
             status: "success",

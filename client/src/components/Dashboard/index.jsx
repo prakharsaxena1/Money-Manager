@@ -1,21 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AppBox from "../AppBox";
 import BudgetExpence from "./BudgetExpense";
 import Friends from "./Friends";
 import Payments from "./Payments";
-
 import { Stack } from "react-bootstrap";
 import { getUserInfo } from "../../services/auth.service";
 import { getFriendsOwes, updateBudgetInfo } from "../../services/user.service";
 import { Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
-
-const initialUserData = {
-  username: "USERNAME",
-  friends: [],
-  budget: 0,
-  expense: 0,
-};
+import { UserContext } from "../../auth.context";
 
 const initialBudgetData = {
   budget: 0,
@@ -30,25 +23,25 @@ const initialFriendsData = [
 ];
 
 const Dashboard = () => {
-  const [userData, setUserData] = useState(initialUserData);
   const [friendsData, setFriendsData] = useState(initialFriendsData);
   const [budgetData, setBudgetData] = useState(initialBudgetData);
+  const { setUsername } = useContext(UserContext);
   // Get user info
   useEffect(() => {
     getUserInfo().then((res) => {
       const { data } = res.data;
+      setUsername(data.username);
       setBudgetData({
         budget: data.budget,
         expense: data.expense,
         budgetBalance: data.budget - data.expense,
       });
-      setUserData(data);
     });
     getFriendsOwes().then((res) => {
       const { data } = res.data;
       setFriendsData(data);
     });
-  }, []);
+  }, [setUsername]);
   if (!Cookies.get("authorization")) {
     return <Navigate to="/login" />;
   }
@@ -59,7 +52,7 @@ const Dashboard = () => {
     });
   };
   return (
-    <AppBox username={userData.username}>
+    <AppBox>
       <Stack
         gap={3}
         direction="horizontal"

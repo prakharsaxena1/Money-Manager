@@ -21,36 +21,20 @@ const PaymentsListBox = styled.div`
   overflow-y: auto;
 `;
 
-const paymentMade = (id) => {
-  console.log("Payment made function for payment ID:", id);
-  updateTransaction(id).then((res) => {
-    console.log(res.data);
-  });
-};
-
-const transformTransactionDataPayments = (data) => {
-  const transactions = data.map((transaction) => ({
-    id: transaction._id,
-    createdAt: transaction.createdAt,
-    amount: transaction.amount,
-    payTo: transaction.paidBy.username,
-    category: transaction.category,
-    message: transaction.message,
-    myShare: Math.round(
-      transaction.amount / (transaction.divideAmong.length + 1)
-    ),
-  }));
-
-  return transactions;
-};
-
 const Payments = ({ friendsData = [] }) => {
   const [showAddModal, setShowAddModal] = useState();
   const [paymentData, setPaymentData] = useState([]);
+  const paymentMade = (id) => {
+    updateTransaction(id).then((res) => {
+      setPaymentData((prev) => {
+        return prev.filter((transaction) => transaction._id !== id) || [];
+      });
+    });
+  };
   useEffect(() => {
     getUserTransactions().then((res) => {
       const { data } = res.data;
-      setPaymentData(transformTransactionDataPayments(data.pending));
+      setPaymentData(data.pending);
     });
   }, []);
 
@@ -92,14 +76,18 @@ const Payments = ({ friendsData = [] }) => {
                       {moment(payment.createdAt).format("MMM Do YYYY, h:mm A")}
                     </td>
                     <td>{payment.amount}</td>
-                    <td>{payment.payTo}</td>
+                    <td>{payment.paidBy.username}</td>
                     <td>{payment.category}</td>
                     <td>{payment.message}</td>
-                    <td>{payment.myShare}</td>
+                    <td>
+                      {Math.round(
+                        payment.amount / (payment.divideAmong.length + 1)
+                      )}
+                    </td>
                     <td>
                       <Button
                         className="w-100"
-                        onClick={() => paymentMade(payment.id)}
+                        onClick={() => paymentMade(payment._id)}
                       >
                         Pay
                       </Button>

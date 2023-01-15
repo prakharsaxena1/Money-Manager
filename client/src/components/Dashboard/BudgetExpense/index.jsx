@@ -16,7 +16,7 @@ const BudgetExpense = ({ data, updateBudget }) => {
         <div className="d-flex flex-column justify-content-between flex-grow-1">
           <Stack direction="horizontal" gap={3}>
             <InnerTitle>Total:</InnerTitle>
-            <InnerTitle>{data.budget}</InnerTitle>
+            <InnerTitle>{Math.round(data.budget)}</InnerTitle>
             <Button
               variant="dark"
               size="sm"
@@ -27,11 +27,11 @@ const BudgetExpense = ({ data, updateBudget }) => {
           </Stack>
           <Stack direction="horizontal" gap={3}>
             <InnerTitle>Budget left: </InnerTitle>
-            <InnerTitle>{data.budget - data.expense}</InnerTitle>
+            <InnerTitle>{Math.round(data.budget - data.expense)}</InnerTitle>
           </Stack>
           <Stack direction="horizontal" gap={3}>
             <InnerTitle>Expenses: </InnerTitle>
-            <InnerTitle>{data.expense}</InnerTitle>
+            <InnerTitle>{Math.round(data.expense)}</InnerTitle>
           </Stack>
         </div>
       </ComponentBox>

@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { UserContext } from "../../auth.context";
 import { logout } from "../../services/auth.service";
 
-const NavbarComponent = ({ username }) => {
+const NavbarComponent = () => {
+  const { username } = useContext(UserContext);
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
