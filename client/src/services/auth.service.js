@@ -1,4 +1,5 @@
-import axios from 'axios'
+import axios from 'axios';
+import Cookies from "js-cookie";
 const SERVER_URL = "http://localhost:4000/api";
 
 export const login = async (data) => {
@@ -29,3 +30,7 @@ export const getUserInfo = async () => {
         return err
     }
 }
+
+export const logout = () => {
+    Cookies.remove("authorization");
+};

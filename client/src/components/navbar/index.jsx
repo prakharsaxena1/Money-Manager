@@ -1,6 +1,7 @@
 import React from "react";
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { logout } from "../../services/auth.service";
 
 const NavbarComponent = ({ username }) => {
   return (
@@ -23,7 +24,7 @@ const NavbarComponent = ({ username }) => {
               <NavDropdown.Item as={Link} to="/transactions">
                 Transaction history
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/login">
+              <NavDropdown.Item to="/logout" as={Link} onClick={logout}>
                 Logout
               </NavDropdown.Item>
             </NavDropdown>

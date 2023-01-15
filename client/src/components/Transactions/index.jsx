@@ -10,6 +10,8 @@ import {
 import FilterModal from "./Modals/filterModal";
 import AppBox from "../AppBox";
 import { getUserTransactions } from "../../services/user.service";
+import { Navigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const transformTransactionDataHistory = (data) => {
   const transactions = data.map((transaction) => ({
@@ -32,6 +34,9 @@ const Transactions = ({ data = [] }) => {
       setTransactionData(transformTransactionDataHistory(data.allUser));
     });
   }, []);
+  if (!Cookies.get("authorization")) {
+    return <Navigate to="/login" />;
+  }
   return (
     <AppBox>
       <Container

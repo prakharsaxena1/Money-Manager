@@ -7,6 +7,8 @@ import Payments from "./Payments";
 import { Stack } from "react-bootstrap";
 import { getUserInfo } from "../../services/auth.service";
 import { getFriendsOwes, updateBudgetInfo } from "../../services/user.service";
+import { Navigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const initialUserData = {
   username: "USERNAME",
@@ -47,6 +49,9 @@ const Dashboard = () => {
       setFriendsData(data);
     });
   }, []);
+  if (!Cookies.get("authorization")) {
+    return <Navigate to="/login" />;
+  }
   const onUpdateBudgetAction = (budgetUpdate) => {
     updateBudgetInfo(budgetUpdate).then((res) => {
       const { data } = res.data;

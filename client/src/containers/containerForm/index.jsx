@@ -10,16 +10,19 @@ function ContainerForm(props) {
           Money Manager
         </Nav.Link>
       </Container>
-      <Container fluid style={{
-        height: "93vh",
-        paddingTop: "120px",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between"
-      }}>
+      <Container
+        fluid
+        style={{
+          height: "93vh",
+          paddingTop: "120px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
         <Container
           style={{
-            maxWidth: "550px",
+            maxWidth: "500px",
           }}
           className="rounded shadow-lg p-sm-5 p-4 bg-light"
         >
@@ -27,8 +30,8 @@ function ContainerForm(props) {
         </Container>
         <Container
           style={{
-            maxWidth: "550px",
-            minHeight: "40px"
+            maxWidth: "500px",
+            minHeight: "40px",
           }}
           className="py-2"
         >
