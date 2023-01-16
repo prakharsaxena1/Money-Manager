@@ -1,22 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { InnerTitle } from "../../../component.styled";
 import Select from "react-select";
 import { addTransaction } from "../../../../services/user.service";
+import { UserContext } from "../../../../auth.context";
+import { getFriends } from "../../../utils";
 
-const getFriends = (friendsData) => {
-  return friendsData.map((friend) => ({
-    label: friend.username,
-    value: friend._id,
-  }));
-};
-
-const AddModal = ({ show, handleClose, data = [] }) => {
+const AddModal = ({ show, handleClose }) => {
   const [amount, setAmount] = useState(0);
   const [message, setMessage] = useState("");
   const [category, setCategory] = useState("");
   const [divideAmong, setDivideAmong] = useState([]);
   const [settledBy, setSettledBy] = useState([]);
+  const { friends } = useContext(UserContext);
   const onAddAction = () => {
     addTransaction({
       amount,
@@ -90,7 +86,7 @@ const AddModal = ({ show, handleClose, data = [] }) => {
           <InnerTitle style={{ width: "25%" }}>Shared by: </InnerTitle>
           <Select
             className="w-75"
-            options={getFriends(data)}
+            options={getFriends(friends)}
             isMulti={true}
             onChange={handleDivideAmongChange}
           />
@@ -99,7 +95,7 @@ const AddModal = ({ show, handleClose, data = [] }) => {
         <div className="d-flex justify-content-around m-auto mb-3">
           <InnerTitle style={{ width: "25%" }}>Settled by: </InnerTitle>
           <Select
-            options={getFriends(data)}
+            options={getFriends(friends)}
             className="w-75"
             isMulti={true}
             onChange={handleSettledByChange}

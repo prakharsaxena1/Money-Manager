@@ -11,6 +11,16 @@ export const getUserTransactions = async () => {
     }
 };
 
+export const getUserTransactionsQuery = async (data) => {
+    try {
+        const res = await axios.get(`${SERVER_URL}/transaction?category=${data.category}&startDate=${data.startDate}&endDate=${data.endDate}`, { withCredentials: true });
+        return res;
+    }
+    catch (err) {
+        return err;
+    }
+};
+
 export const getFriendsOwes = async () => {
     try {
         const res = await axios.get(`${SERVER_URL}/transaction/friends`, { withCredentials: true });
@@ -44,16 +54,6 @@ export const updateTransaction = async (id, data) => {
 export const deleteTransaction = async (id) => {
     try {
         const res = await axios.delete(`${SERVER_URL}/transaction/${id}`, { withCredentials: true });
-        return res;
-    }
-    catch (err) {
-        return err;
-    }
-};
-
-export const getCompletedTransactions = async (data) => {
-    try {
-        const res = await axios.get(`${SERVER_URL}/transaction?isSettled=true`, { withCredentials: true });
         return res;
     }
     catch (err) {

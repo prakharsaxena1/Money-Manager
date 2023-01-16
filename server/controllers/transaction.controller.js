@@ -34,11 +34,32 @@ const createTransaction = async (req, res) => {
 };
 
 const getTransaction = async (req, res) => {
+    const { category, startDate, endDate } = req.query;
     try {
-        const transactions = await Transaction.find({})
+        const transactions = await Transaction.find({ ...req.query })
             .populate('paidBy', 'username')
             .populate('divideAmong', 'username')
             .populate('settledBy', 'username');
+        let data = transactions;
+        if (category !== undefined) {
+            data = data.filter((element) => element.category === category);
+            console.log(data);
+        }
+        // Start date
+        if (startDate !== undefined) {
+            data = transactions.filter(
+                (element) =>
+                    new Date(element.createdAt).getTime() >=
+                    new Date(startDate).getTime()
+            );
+        }
+        // enddate
+        if (endDate !== undefined) {
+            data = data.filter(
+                (element) =>
+                    new Date(element.createdAt).getTime() <= new Date(endDate).getTime()
+            );
+        }
         let allUser = [];
         for (const transaction of transactions) {
             if (transaction.paidBy.username === req.user.username) {
@@ -84,10 +105,11 @@ const getTransaction = async (req, res) => {
 // DEV
 const getAllTransaction = async (req, res) => {
     try {
-        const transactions = await Transaction.find({})
+        const transactions = await Transaction.find()
             .populate('paidBy', 'username')
             .populate('divideAmong', 'username')
             .populate('settledBy', 'username');
+        // let data = transactions;
         return res.json({
             status: "success",
             count: transactions.length,

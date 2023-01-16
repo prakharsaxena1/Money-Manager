@@ -16,16 +16,9 @@ const initialBudgetData = {
   budgetBalance: 0,
 };
 
-const initialFriendsData = [
-  {
-    username: "",
-  },
-];
-
 const Dashboard = () => {
-  const [friendsData, setFriendsData] = useState(initialFriendsData);
+  const { setUsername, friends, setFriends } = useContext(UserContext);
   const [budgetData, setBudgetData] = useState(initialBudgetData);
-  const { setUsername } = useContext(UserContext);
   // Get user info
   useEffect(() => {
     getUserInfo().then((res) => {
@@ -39,9 +32,9 @@ const Dashboard = () => {
     });
     getFriendsOwes().then((res) => {
       const { data } = res.data;
-      setFriendsData(data);
+      setFriends(data);
     });
-  }, [setUsername]);
+  }, [setUsername, setFriends]);
   if (!Cookies.get("authorization")) {
     return <Navigate to="/login" />;
   }
@@ -67,7 +60,7 @@ const Dashboard = () => {
             height: "calc( 100vh - 90px )",
           }}
         >
-          <Payments friendsData={friendsData || []} />
+          <Payments />
         </div>
         <div
           style={{
@@ -82,7 +75,7 @@ const Dashboard = () => {
             data={budgetData}
             updateBudget={onUpdateBudgetAction}
           />
-          <Friends data={friendsData} />
+          <Friends data={friends} />
         </div>
       </Stack>
     </AppBox>

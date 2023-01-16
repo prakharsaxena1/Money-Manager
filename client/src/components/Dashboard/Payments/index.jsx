@@ -21,7 +21,7 @@ const PaymentsListBox = styled.div`
   overflow-y: auto;
 `;
 
-const Payments = ({ friendsData = [] }) => {
+const Payments = () => {
   const [showAddModal, setShowAddModal] = useState();
   const [paymentData, setPaymentData] = useState([]);
   const paymentMade = (id) => {
@@ -102,7 +102,6 @@ const Payments = ({ friendsData = [] }) => {
         </PaymentsListBox>
       </ComponentBox>
       <AddModal
-        data={friendsData}
         show={showAddModal}
         handleClose={() => setShowAddModal(false)}
       />

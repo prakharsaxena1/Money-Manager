@@ -99,6 +99,7 @@ const Transactions = () => {
         </TransactionsListBox>
       </Container>
       <FilterModal
+        setTransactionData={setTransactionData}
         show={showFilterModal}
         handleClose={() => setShowFilterModal(false)}
       />
