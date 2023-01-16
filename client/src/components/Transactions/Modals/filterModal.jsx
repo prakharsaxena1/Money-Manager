@@ -3,29 +3,36 @@ import { Button, Modal } from "react-bootstrap";
 import Select from "react-select";
 import { getUserTransactionsQuery } from "../../../services/user.service";
 import { InnerTitle } from "../../component.styled";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const FilterModal = ({ show, handleClose, setTransactionData }) => {
   const [category, setCategory] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const today = new Date();
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  const [startDate, setStartDate] = useState(sevenDaysAgo);
+  const [endDate, setEndDate] = useState(today);
+
+  console.log({
+    startDate,
+    endDate,
+    category,
+  });
   const handleCategoryChange = (selectedOption) => {
     setCategory(selectedOption.value);
-  };
-  const handleChangeStart = (event) => {
-    setStartDate(event.target.value);
-  };
-  const handleChangeEnd = (event) => {
-    setEndDate(event.target.value);
   };
 
   const onFilterAction = () => {
     getUserTransactionsQuery({
-      category: category === "" ? "food" : category,
-      startDate: startDate === "" ? new Date() : startDate,
+      category: category,
+      startDate:
+        startDate === ""
+          ? new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+          : startDate,
       endDate: endDate === "" ? new Date() : endDate,
     }).then((res) => {
       const { data } = res.data;
-      setTransactionData(data.allUser);
+      setTransactionData(data.filtered);
     });
     handleClose();
   };
@@ -38,19 +45,17 @@ const FilterModal = ({ show, handleClose, setTransactionData }) => {
         {/* From */}
         <div className="d-flex justify-content-around m-auto mb-3">
           <InnerTitle style={{ width: "25%" }}>From: </InnerTitle>
-          <input
-            type="date"
-            onChange={handleChangeStart}
-            style={{ width: "75%" }}
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
           />
         </div>
         {/* To */}
         <div className="d-flex justify-content-around m-auto mb-3">
           <InnerTitle style={{ width: "25%" }}>To: </InnerTitle>
-          <input
-            type="date"
-            onChange={handleChangeEnd}
-            style={{ width: "75%" }}
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
           />
         </div>
         <div className="d-flex justify-content-around m-auto mb-3">
